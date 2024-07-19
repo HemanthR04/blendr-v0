@@ -1,7 +1,18 @@
 import {RegisterLink, LoginLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const { isAuthenticated } = getKindeServerSession();
+  const isUserAuthenticated = await isAuthenticated();
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  console.log(user);
+  if (isUserAuthenticated) {
+    redirect('/home');
+  }
   return (
     <>
       <div className="w-full h-screen bg-primary">
